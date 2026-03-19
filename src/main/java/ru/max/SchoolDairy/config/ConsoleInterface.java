@@ -2,8 +2,8 @@ package ru.max.SchoolDairy.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.max.SchoolDairy.Service.UserService;
 import ru.max.SchoolDairy.model.User;
+import ru.max.SchoolDairy.service.UserService;
 
 import java.util.Scanner;
 

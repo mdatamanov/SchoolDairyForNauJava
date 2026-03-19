@@ -1,4 +1,4 @@
-package ru.max.SchoolDairy.Service;
+package ru.max.SchoolDairy.service;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +7,8 @@ import ru.max.SchoolDairy.config.Config;
 import ru.max.SchoolDairy.model.User;
 import ru.max.SchoolDairy.repository.UserRepository;
 
-import java.util.List;
-
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
@@ -18,7 +16,7 @@ public class UserServiceImpl implements UserService{
 
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository,  Config config) {
+    public UserServiceImpl(UserRepository userRepository, Config config) {
         this.userRepository = userRepository;
         this.appConfig = config;
     }

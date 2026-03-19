@@ -1,10 +1,8 @@
 package ru.max.SchoolDairy.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 import ru.max.SchoolDairy.model.User;
 
 import java.util.ArrayList;
@@ -36,7 +34,7 @@ public class Config {
     }
 
     @Bean
-    public List<User> userContainer(){
+    public List<User> userContainer() {
         return new ArrayList<>();
     }
 }

@@ -9,10 +9,10 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String fullName, String email, String password) {
+    public User(Long id, String fullName, String login, String password) {
         this.id = id;
         this.fullName = fullName;
-        this.login = email;
+        this.login = login;
         this.password = password;
     }
 

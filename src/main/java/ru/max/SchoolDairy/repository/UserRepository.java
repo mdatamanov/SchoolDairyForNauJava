@@ -1,15 +1,13 @@
 package ru.max.SchoolDairy.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ru.max.SchoolDairy.model.User;
 
 import java.util.List;
 
 @Component
-public class UserRepository implements CrudRepository<User, Long>{
+public class UserRepository implements CrudRepository<User, Long> {
 
     private final List<User> userContainer;
 
