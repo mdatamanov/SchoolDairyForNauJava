@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: SchoolDairy
+    version: 1.0.0
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info,metrics,env,beans,mappings,threaddump,heapdump
