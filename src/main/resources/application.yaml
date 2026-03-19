@@ -2,6 +2,16 @@ spring:
   application:
     name: SchoolDairy
     version: 1.0.0
+  datasource:
+    url: jdbc:postgresql://localhost:5432/schoolDairy_db
+    username: postgres
+    password: postgres
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        ddl:
+          auto: update
 management:
   endpoints:
     web:
