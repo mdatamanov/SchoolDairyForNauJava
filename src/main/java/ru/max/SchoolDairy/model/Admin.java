@@ -1,33 +1,55 @@
 package ru.max.SchoolDairy.model;
 
-public class Admin extends User{
-    // + все поля user
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "admins")
+public class Admin {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "full_name", nullable = false)
+    private String fullName;
+
+    @Column(nullable = false, unique = true)
+    private String login;
+
+    @Column(nullable = false)
+    private String password;
+
     private String department;
+
+    @Column(name = "access_level")
     private String accessLevel;
 
-    public Admin(){
-        super();
-    }
+    public Admin() {}
 
-    public Admin(Long id, String fullName, String login, String password, String department, String accessLevel) {
-        super(id, fullName, login, password);
+    public Admin(String fullName, String login, String password,
+                 String department, String accessLevel) {
+        this.fullName = fullName;
+        this.login = login;
+        this.password = password;
         this.department = department;
         this.accessLevel = accessLevel;
     }
 
-    public String getDepartment() {
-        return department;
-    }
+    // Геттеры и сеттеры
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setDepartment(String department) {
-        this.department = department;
-    }
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
 
-    public String getAccessLevel() {
-        return accessLevel;
-    }
+    public String getLogin() { return login; }
+    public void setLogin(String login) { this.login = login; }
 
-    public void setAccessLevel(String accessLevel) {
-        this.accessLevel = accessLevel;
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public String getDepartment() { return department; }
+    public void setDepartment(String department) { this.department = department; }
+
+    public String getAccessLevel() { return accessLevel; }
+    public void setAccessLevel(String accessLevel) { this.accessLevel = accessLevel; }
 }

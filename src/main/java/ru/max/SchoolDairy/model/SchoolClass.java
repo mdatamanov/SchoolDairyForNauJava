@@ -1,29 +1,48 @@
 package ru.max.SchoolDairy.model;
 
+import jakarta.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "classes")
 public class SchoolClass {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+
+    @Column(name = "class_name", nullable = false)
+    private String className;
+
+    @Column(name = "academic_year")
     private String academicYear;
+
+    @Column(name = "room_number")
     private String roomNumber;
+
+    @OneToOne
+    @JoinColumn(name = "homeroom_teacher_id", unique = true)
     private Teacher homeroomTeacher;
+
+    @OneToMany(mappedBy = "studentClass")
     private List<Student> students;
+
+    @OneToMany(mappedBy = "schoolClass")
     private List<Homework> homeworks;
 
     public SchoolClass() {}
 
-    public SchoolClass(String name, String academicYear, String roomNumber) {
-        this.name = name;
+    public SchoolClass(String className, String academicYear, String roomNumber) {
+        this.className = className;
         this.academicYear = academicYear;
         this.roomNumber = roomNumber;
     }
 
+    // Геттеры и сеттеры
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public String getClassName() { return className; }
+    public void setClassName(String className) { this.className = className; }
 
     public String getAcademicYear() { return academicYear; }
     public void setAcademicYear(String academicYear) { this.academicYear = academicYear; }

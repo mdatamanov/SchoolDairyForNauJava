@@ -1,14 +1,32 @@
 package ru.max.SchoolDairy.model;
 
+import jakarta.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "subjects")
 public class Subject {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(length = 1000)
     private String description;
+
+    @Column(name = "hours_per_week")
     private Integer hoursPerWeek;
+
+    @ManyToOne
+    @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
+
+    @OneToMany(mappedBy = "subject")
     private List<Grade> grades;
+
+    @OneToMany(mappedBy = "subject")
     private List<Homework> homeworks;
 
     public Subject() {}
@@ -19,6 +37,7 @@ public class Subject {
         this.hoursPerWeek = hoursPerWeek;
     }
 
+    // Геттеры и сеттеры
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

@@ -1,27 +1,47 @@
 package ru.max.SchoolDairy.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "schedule")
 public class Schedule {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "day_of_week", nullable = false)
     private Integer dayOfWeek;
+
+    @Column(name = "lesson_number", nullable = false)
     private Integer lessonNumber;
+
     private String classroom;
+
+    @Column(name = "week_type")
     private String weekType;
 
+    @ManyToOne
+    @JoinColumn(name = "class_id", nullable = false)
     private SchoolClass schoolClass;
+
+    @ManyToOne
+    @JoinColumn(name = "subject_id", nullable = false)
     private Subject subject;
+
+    @ManyToOne
+    @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
 
     public Schedule() {}
 
-    public Schedule(Long id, Integer dayOfWeek, Integer lessonNumber,
-                    String classroom, String weekType) {
-        this.id = id;
+    public Schedule(Integer dayOfWeek, Integer lessonNumber, String classroom, String weekType) {
         this.dayOfWeek = dayOfWeek;
         this.lessonNumber = lessonNumber;
         this.classroom = classroom;
         this.weekType = weekType;
     }
 
+    // Геттеры и сеттеры
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
