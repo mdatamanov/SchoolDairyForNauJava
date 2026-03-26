@@ -32,9 +32,4 @@ public class Config {
     public void setAppVersion(String appVersion) {
         this.appVersion = appVersion;
     }
-
-    @Bean
-    public List<User> userContainer() {
-        return new ArrayList<>();
-    }
 }

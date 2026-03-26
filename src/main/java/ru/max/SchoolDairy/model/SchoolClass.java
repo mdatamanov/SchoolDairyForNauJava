@@ -37,7 +37,6 @@ public class SchoolClass {
         this.roomNumber = roomNumber;
     }
 
-    // Геттеры и сеттеры
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

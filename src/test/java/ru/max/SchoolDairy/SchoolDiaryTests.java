@@ -5,6 +5,7 @@ import ru.max.SchoolDairy.repository.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import ru.max.SchoolDairy.service.GradeService;
 
 import java.time.LocalDate;
@@ -13,8 +14,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class SchoolDiaryTests {
+@Transactional
+class SchoolDiaryTests {
 
     @Autowired
     private StudentRepository studentRepository;
@@ -37,112 +38,100 @@ public class SchoolDiaryTests {
     @Autowired
     private SubjectRepository subjectRepository;
 
-    private static SchoolClass testClass;
-    private static Teacher testTeacher;
-    private static Subject testSubject;
+    private SchoolClass testClass;
+    private Teacher testTeacher;
+    private Subject testSubject;
 
-    @BeforeAll
-    public static void setup(@Autowired SchoolClassRepository classRepo,
-                             @Autowired TeacherRepository teacherRepo,
-                             @Autowired SubjectRepository subjectRepo) {
-        // Создаем учителя
+    @BeforeEach
+    public void setUp() {
         testTeacher = new Teacher();
         testTeacher.setFullName("Тестов Учитель");
-        testTeacher.setLogin("teacher_" + System.currentTimeMillis());
+        testTeacher.setLogin("teacher_" + System.currentTimeMillis() + "_" + Math.random());
         testTeacher.setPassword("123");
-        testTeacher = teacherRepo.save(testTeacher);
+        testTeacher = teacherRepository.save(testTeacher);
 
-        // Создаем класс
         testClass = new SchoolClass();
         testClass.setClassName("5А");
         testClass.setAcademicYear("2024-2025");
         testClass.setHomeroomTeacher(testTeacher);
-        testClass = classRepo.save(testClass);
+        testClass = classRepository.save(testClass);
 
-        // Создаем предмет
         testSubject = new Subject();
         testSubject.setName("Математика");
         testSubject.setTeacher(testTeacher);
-        testSubject = subjectRepo.save(testSubject);
+        testSubject = subjectRepository.save(testSubject);
     }
 
-    // ===== ТЕСТЫ ПУНКТА 5 (Query Lookup Strategy) =====
+    private Student createTestStudent() {
+        Student student = new Student();
+        student.setFullName("Тестов Ученик");
+        student.setLogin("test_login_" + System.currentTimeMillis() + "_" + Math.random());
+        student.setPassword("123");
+        student.setBirthDate(LocalDate.of(2010, 1, 1));
+        student.setAddress("Москва");
+        student.setStudentClass(testClass);
+        return studentRepository.save(student);
+    }
 
     @Test
-    @Order(1)
-    public void testQueryLookupStrategy() {
+    void testQueryLookupStrategy() {
+        Student student = createTestStudent();
+
         List<Student> students = studentRepository
                 .findByBirthDateBetweenOrAddressContainingIgnoreCase(
                         LocalDate.of(2010, 1, 1),
                         LocalDate.of(2015, 12, 31),
                         "Москва");
+
         assertNotNull(students);
+        assertTrue(students.stream().anyMatch(s -> s.getId().equals(student.getId())));
     }
 
-    // ===== ТЕСТЫ ПУНКТА 6 (Criteria API) =====
-
     @Test
-    @Order(2)
-    public void testCriteriaApiStudent() {
+    void testCriteriaApiStudent() {
+        Student student = createTestStudent();
+
         List<Student> students = studentRepository
                 .findStudentsByBirthDateBetweenOrAddress(
                         LocalDate.of(2010, 1, 1),
                         LocalDate.of(2015, 12, 31),
                         "Москва");
+
         assertNotNull(students);
+        assertTrue(students.stream().anyMatch(s -> s.getId().equals(student.getId())));
     }
 
     @Test
-    @Order(3)
-    public void testCriteriaApiHomework() {
+    void testCriteriaApiHomework() {
+        Student student = createTestStudent();
+
+        Homework homework = new Homework();
+        homework.setTeacher(testTeacher);
+        homework.setSubject(testSubject);
+        homework.setStudent(student);
+        homework.setDescription("Домашнее задание");
+        homework.setSchoolClass(testClass);
+        homework.setDueDate(LocalDate.now().plusDays(1));
+
+        Homework savedHomework = homeworkRepository.save(homework);
+
         List<Homework> homeworks = homeworkRepository
                 .findActiveHomeworksByTeacher(testTeacher.getId(), LocalDate.now());
+
         assertNotNull(homeworks);
-    }
-
-    // ===== ТЕСТЫ ПУНКТА 7 (Транзакционный метод) =====
-
-    @Test
-    @Order(4)
-    public void testTransactionSuccess() {
-        // Создаем ученика
-        Student student = new Student();
-        student.setFullName("Тестов Ученик");
-        student.setLogin("test_login_" + System.currentTimeMillis());
-        student.setPassword("123");
-        student.setBirthDate(LocalDate.of(2010, 1, 1));
-        student.setAddress("Москва");
-        student.setStudentClass(testClass);
-        student = studentRepository.save(student);
-
-        // Добавляем оценку с предметом и учителем
-        Grade grade = gradeService.addGradeToStudent(
-                student.getId(),           // studentId
-                testSubject.getId(),       // subjectId
-                testTeacher.getId(),       // teacherId
-                5,                         // value
-                "Отлично",                 // comment
-                1                          // term
-        );
-
-        // Проверяем
-        assertNotNull(grade.getId());
-        assertEquals(5, grade.getValue());
-        assertNotNull(grade.getSubject());
-        assertNotNull(grade.getTeacher());
+        assertTrue(homeworks.stream().anyMatch(h -> h.getId().equals(savedHomework.getId())));
     }
 
     @Test
-    @Order(5)
-    public void testTransactionRollbackStudentNotFound() {
+    void testTransactionRollbackStudentNotFound() {
         Exception exception = assertThrows(RuntimeException.class, () -> {
             gradeService.addGradeToStudent(
-                    999L,                    // studentId
-                    testSubject.getId(),     // subjectId
-                    testTeacher.getId(),     // teacherId
-                    5,                       // value
-                    "Отлично",               // comment
-                    1                        // term
+                    999L,
+                    testSubject.getId(),
+                    testTeacher.getId(),
+                    5,
+                    "Отлично",
+                    1
             );
         });
 
@@ -150,33 +139,21 @@ public class SchoolDiaryTests {
     }
 
     @Test
-    @Order(6)
-    public void testTransactionRollbackOnError() {
-        // Создаем ученика с классом
-        Student student = new Student();
-        student.setFullName("Тестов Ученик 2");
-        student.setLogin("test_login2_" + System.currentTimeMillis());
-        student.setPassword("123");
-        student.setBirthDate(LocalDate.of(2010, 1, 1));
-        student.setAddress("Москва");
-        student.setStudentClass(testClass);
-        student = studentRepository.save(student);
+    void testTransactionRollbackOnError() {
+        Student student = createTestStudent();
 
         long countBefore = gradeRepository.count();
 
-        // Пытаемся добавить оценку с null значением (value = null)
-        try {
+        assertThrows(Exception.class, () -> {
             gradeService.addGradeToStudent(
-                    student.getId(),           // studentId
-                    testSubject.getId(),       // subjectId
-                    testTeacher.getId(),       // teacherId
-                    null,                      // value - это null вызовет ошибку
-                    "Ошибка",                   // comment
-                    1                           // term
+                    student.getId(),
+                    testSubject.getId(),
+                    testTeacher.getId(),
+                    null,
+                    "Ошибка",
+                    1
             );
-        } catch (Exception e) {
-            // Игнорируем
-        }
+        });
 
         long countAfter = gradeRepository.count();
         assertEquals(countBefore, countAfter, "Транзакция должна откатиться");

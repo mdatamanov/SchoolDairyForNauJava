@@ -31,24 +31,18 @@ public class GradeService {
 
     /**
      * Транзакционный метод добавления оценки ученику
-     * Если ученик не найден - всё откатывается
      */
     @Transactional
-    public Grade addGradeToStudent(Long studentId, Long subjectId, Long teacherId,
+    public void addGradeToStudent(Long studentId, Long subjectId, Long teacherId,
                                    Integer value, String comment, Integer term) {
-
-
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Ученик с id " + studentId + " не найден"));
-
 
         Subject subject = subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new RuntimeException("Предмет с id " + subjectId + " не найден"));
 
-
         Teacher teacher = teacherRepository.findById(teacherId)
                 .orElseThrow(() -> new RuntimeException("Учитель с id " + teacherId + " не найден"));
-
 
         Grade grade = new Grade();
         grade.setValue(value);
@@ -59,6 +53,9 @@ public class GradeService {
         grade.setSubject(subject);
         grade.setTeacher(teacher);
 
-        return gradeRepository.save(grade);
+        student.getGrades().add(grade);
+        grade.setStudent(student);
+
+        studentRepository.save(student);
     }
 }
