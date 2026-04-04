@@ -5,14 +5,15 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.3</version>
+        <version>3.4.4</version>
         <relativePath/>
     </parent>
     <groupId>ru.max</groupId>
     <artifactId>SchoolDairy</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>SchoolDairy</name>
-    <description>Project for Naumen Java course</description>
+    <description>Project for Naumen Java course
+    </description>
     <properties>
         <java.version>21</java.version>
     </properties>

@@ -2,6 +2,7 @@ package ru.max.SchoolDairy.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import ru.max.SchoolDairy.model.Homework;
 import org.springframework.data.repository.CrudRepository;
 import ru.max.SchoolDairy.repository.custom.HomeworkRepositoryCustom;
@@ -9,6 +10,7 @@ import ru.max.SchoolDairy.repository.custom.HomeworkRepositoryCustom;
 import java.time.LocalDate;
 import java.util.List;
 
+@RepositoryRestResource
 public interface HomeworkRepository extends CrudRepository<Homework, Long>, HomeworkRepositoryCustom {
 
     @Query("SELECT h FROM Homework h WHERE h.teacher.id = :teacherId AND h.dueDate > :currentDate")

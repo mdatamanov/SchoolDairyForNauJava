@@ -1,5 +1,6 @@
 package ru.max.SchoolDairy.repository.custom;
 
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import ru.max.SchoolDairy.model.Homework;
 import ru.max.SchoolDairy.model.Subject;
 import ru.max.SchoolDairy.model.Teacher;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+@RepositoryRestResource
 @Transactional(readOnly = true)
 public class HomeworkRepositoryCustomImpl implements HomeworkRepositoryCustom {
 

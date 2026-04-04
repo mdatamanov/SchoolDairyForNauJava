@@ -1,5 +1,6 @@
 package ru.max.SchoolDairy.repository.custom;
 
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import ru.max.SchoolDairy.model.Student;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+@RepositoryRestResource
 @Transactional(readOnly = true)
 public class StudentRepositoryCustomImpl implements StudentRepositoryCustom {
 
