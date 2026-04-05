@@ -23,16 +23,11 @@ public class HomeworkRepositoryCustomImpl implements HomeworkRepositoryCustom {
 
     @Override
     public List<Homework> findActiveHomeworksByTeacher(Long teacherId, LocalDate currentDate) {
-
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Homework> query = cb.createQuery(Homework.class);
         Root<Homework> root = query.from(Homework.class);
-
         List<Predicate> predicates = new ArrayList<>();
-
         Join<Homework, Teacher> teacherJoin = root.join("teacher");
-
-
         if (teacherId != null) {
             Predicate teacherPredicate = cb.equal(teacherJoin.get("id"), teacherId);
             predicates.add(teacherPredicate);
@@ -42,11 +37,8 @@ public class HomeworkRepositoryCustomImpl implements HomeworkRepositoryCustom {
             Predicate datePredicate = cb.greaterThan(root.get("dueDate"), currentDate);
             predicates.add(datePredicate);
         }
-
         query.orderBy(cb.asc(root.get("dueDate")));
-
         query.where(predicates.toArray(new Predicate[0]));
-
         return entityManager.createQuery(query).getResultList();
     }
 
@@ -57,11 +49,8 @@ public class HomeworkRepositoryCustomImpl implements HomeworkRepositoryCustom {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Homework> query = cb.createQuery(Homework.class);
         Root<Homework> root = query.from(Homework.class);
-
         List<Predicate> predicates = new ArrayList<>();
-
         Join<Homework, Subject> subjectJoin = root.join("subject");
-
         Join<Homework, SchoolClass> classJoin = root.join("schoolClass");
 
         if (subjectId != null) {
@@ -78,10 +67,8 @@ public class HomeworkRepositoryCustomImpl implements HomeworkRepositoryCustom {
             Predicate datePredicate = cb.between(root.get("dueDate"), fromDate, toDate);
             predicates.add(datePredicate);
         }
-
         query.where(predicates.toArray(new Predicate[0]));
         query.orderBy(cb.asc(root.get("dueDate")));
-
         return entityManager.createQuery(query).getResultList();
     }
 }
