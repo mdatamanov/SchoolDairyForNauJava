@@ -12,7 +12,6 @@ import ru.max.SchoolDairy.exception.ResourceNotFoundException;
 import java.time.LocalDateTime;
 
 @RestControllerAdvice
-
 public class AlternativeExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -25,7 +24,6 @@ public class AlternativeExceptionHandler {
                 e.getMessage(),
                 request.getRequestURI()
         );
-
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
@@ -39,9 +37,7 @@ public class AlternativeExceptionHandler {
                 e.getMessage(),
                 request.getRequestURI()
         );
-
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
-
 }
 
