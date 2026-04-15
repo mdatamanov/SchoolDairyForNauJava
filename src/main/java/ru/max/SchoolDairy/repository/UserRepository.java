@@ -1,12 +1,14 @@
 package ru.max.SchoolDairy.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Component;
 import ru.max.SchoolDairy.model.User;
 
 import java.util.List;
 
 @Component
+@RepositoryRestResource
 public class UserRepository implements CrudRepository<User, Long> {
 
     @Override

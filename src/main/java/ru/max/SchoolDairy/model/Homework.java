@@ -1,5 +1,6 @@
 package ru.max.SchoolDairy.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,10 +33,12 @@ public class Homework {
 
     @ManyToOne
     @JoinColumn(name = "teacher_id", nullable = false)
+    @JsonIgnore
     private Teacher teacher;
 
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
+    @JsonIgnore
     private Student student;
 
     public Homework() {}

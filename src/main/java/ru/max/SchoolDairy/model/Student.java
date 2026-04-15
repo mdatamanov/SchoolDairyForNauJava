@@ -1,5 +1,6 @@
 package ru.max.SchoolDairy.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -25,14 +26,17 @@ public class Student {
 
     private String address;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "class_id", nullable = false)
     private SchoolClass studentClass;
 
     @OneToMany(mappedBy = "student")
+    @JsonIgnore
     private List<Grade> grades;
 
     @OneToMany(mappedBy = "student")
+    @JsonIgnore
     private List<Homework> homeworks;
 
     public Student() {}

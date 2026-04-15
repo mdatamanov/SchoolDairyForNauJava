@@ -1,5 +1,8 @@
 package ru.max.SchoolDairy.repository;
 
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
+@RepositoryRestResource
 public interface CrudRepository<T, ID> {
     void create(T entity);
 
