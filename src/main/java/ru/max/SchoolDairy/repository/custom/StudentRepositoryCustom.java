@@ -1,11 +1,11 @@
 package ru.max.SchoolDairy.repository.custom;
 
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.stereotype.Repository;
 import ru.max.SchoolDairy.model.Student;
 import java.time.LocalDate;
 import java.util.List;
 
-@RepositoryRestResource
+@Repository
 public interface StudentRepositoryCustom {
 
     List<Student> findStudentsByBirthDateBetweenOrAddress(
