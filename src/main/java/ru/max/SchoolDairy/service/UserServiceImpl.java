@@ -2,10 +2,12 @@ package ru.max.SchoolDairy.service;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.max.SchoolDairy.config.Config;
 import ru.max.SchoolDairy.dto.Role;
 import ru.max.SchoolDairy.model.User;
+import ru.max.SchoolDairy.repository.User.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -13,6 +15,9 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     private Config appConfig;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @Autowired
@@ -39,23 +44,31 @@ public class UserServiceImpl implements UserService {
         user.setLogin(login);
         user.setPassword(password);
         user.setRole(role);
-        userRepository.create(user);
+        userRepository.save(user);
     }
 
     @Override
     public User findUserById(Long id) {
-        return userRepository.read(id);
+        return null;
     }
 
     @Override
     public void deleteUser(Long id) {
-        userRepository.delete(id);
+
     }
 
     @Override
     public void updateLogin(Long id, String login) {
-        User user = findUserById(id);
-        user.setLogin(login);
-        userRepository.update(user);
+
     }
+
+    public void addUser(User user) throws Exception {
+        if (userRepository.findByUsername(user.getName()).isPresent()) {
+            throw new Exception("User exists");
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.ROLE_USER);
+        userRepository.save(user);
+    }
+
 }

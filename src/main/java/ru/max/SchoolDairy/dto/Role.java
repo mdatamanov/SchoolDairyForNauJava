@@ -1,6 +1,6 @@
 package ru.max.SchoolDairy.dto;
 
 public enum Role {
-    ADMIN,
-    USER
+    ROLE_ADMIN,
+    ROLE_USER
 }
