@@ -4,8 +4,8 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.max.SchoolDairy.config.Config;
+import ru.max.SchoolDairy.dto.Role;
 import ru.max.SchoolDairy.model.User;
-import ru.max.SchoolDairy.repository.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -32,12 +32,13 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void createUser(Long id, String fullName, String login, String password) {
+    public void createUser(Long id, String name, String login, String password,  Role role) {
         User user = new User();
         user.setId(id);
-        user.setFullName(fullName);
+        user.setName(name);
         user.setLogin(login);
         user.setPassword(password);
+        user.setRole(role);
         userRepository.create(user);
     }
 

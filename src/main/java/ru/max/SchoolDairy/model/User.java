@@ -1,19 +1,23 @@
 package ru.max.SchoolDairy.model;
 
+import ru.max.SchoolDairy.dto.Role;
+
 public class User {
+    private Role role;
     private Long id;
-    private String fullName;
+    private String name;
     private String login;
     private String password;
 
     public User() {
     }
 
-    public User(Long id, String fullName, String login, String password) {
+    public User(Long id, String fullName, String login, String password,  Role role) {
         this.id = id;
-        this.fullName = fullName;
+        this.name = fullName;
         this.login = login;
         this.password = password;
+        this.role = role;
     }
 
     public Long getId() {
@@ -24,12 +28,12 @@ public class User {
         this.id = id;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getName() {
+        return name;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getLogin() {
@@ -46,5 +50,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
