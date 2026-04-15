@@ -1,4 +1,4 @@
-package ru.max.SchoolDairy.сontroller;
+package ru.max.SchoolDairy.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,10 +16,10 @@ import java.util.List;
 @RequestMapping("/rest")
 public class RestControllerWithTwoCustomMethods {
 
-    @Autowired
-    HomeworkRepository homeworkRepository;
-    StudentRepository studentRepository;
+    private final HomeworkRepository homeworkRepository;
+    private final StudentRepository studentRepository;
 
+    @Autowired
     public RestControllerWithTwoCustomMethods(HomeworkRepository homeworkRepository, StudentRepository studentRepository) {
         this.homeworkRepository = homeworkRepository;
         this.studentRepository = studentRepository;
