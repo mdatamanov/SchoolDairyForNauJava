@@ -9,6 +9,8 @@ import ru.max.SchoolDairy.dto.Role;
 import ru.max.SchoolDairy.model.User;
 import ru.max.SchoolDairy.repository.user.UserRepository;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -47,18 +49,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserById(Long id) {
-        return null;
+    public Optional<User> findUserById(Long id) {
+        return userRepository.findById(id);
     }
 
     @Override
     public void deleteUser(Long id) {
-
+        userRepository.deleteById(id);
     }
 
     @Override
     public void updateLogin(Long id, String login) {
-
+        userRepository.findById(id).ifPresent(user -> {
+            user.setUsername(login);
+            userRepository.save(user);
+        });
     }
 
 }
