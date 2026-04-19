@@ -6,13 +6,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.max.SchoolDairy.model.User;
+import ru.max.SchoolDairy.service.UserService;
 import ru.max.SchoolDairy.service.UserServiceImpl;
 
 @Controller
 public class RegistrationController {
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @GetMapping("/registration")
     public String registration() {
@@ -22,8 +23,8 @@ public class RegistrationController {
     @PostMapping("/registration")
     public String addUser(User user, Model model) {
         try {
-            userService.addUser(user);
-            return "redirect:/login";
+            userService.createUser(user);
+            return "redirect:/login?registered=true";
         } catch (Exception ex) {
             model.addAttribute("message", "Пользователь с таким именем уже существует");
             return "registration";

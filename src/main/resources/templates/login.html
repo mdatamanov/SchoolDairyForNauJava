@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Регистрация</title>
+    <title>Вход в систему</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -45,15 +45,20 @@
         button:hover {
             background-color: #45a049;
         }
-        .login-btn {
+        .register-btn {
             background-color: #008CBA;
             margin-top: 5px;
         }
-        .login-btn:hover {
+        .register-btn:hover {
             background-color: #007B9E;
         }
         .error {
             color: red;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .message {
+            color: green;
             text-align: center;
             margin-bottom: 10px;
         }
@@ -66,20 +71,26 @@
 </head>
 <body>
 <div class="container">
-    <h2>Регистрация</h2>
+    <h2>Вход в систему</h2>
 
-    <div th:if="${message}" class="error" th:text="${message}"></div>
+    <div th:if="${param.error}" class="error">
+        Неверное имя пользователя или пароль
+    </div>
 
-    <form method="post" action="/registration">
+    <div th:if="${param.logout}" class="message">
+        Вы успешно вышли из системы
+    </div>
+
+    <form method="post" action="/process-login">
         <input type="text" name="username" placeholder="Имя пользователя" required>
         <input type="password" name="password" placeholder="Пароль" required>
-        <button type="submit">Зарегистрироваться</button>
+        <button type="submit">Войти</button>
     </form>
 
     <hr>
 
-    <form method="get" action="/login">
-        <button type="submit" class="login-btn">Уже есть аккаунт? Войти</button>
+    <form method="get" action="/registration">
+        <button type="submit" class="register-btn">Зарегистрироваться</button>
     </form>
 </div>
 </body>

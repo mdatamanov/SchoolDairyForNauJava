@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.max.SchoolDairy.config.Config;
 import ru.max.SchoolDairy.dto.Role;
 import ru.max.SchoolDairy.model.User;
-import ru.max.SchoolDairy.repository.User.UserRepository;
+import ru.max.SchoolDairy.repository.user.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,13 +37,12 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void createUser(Long id, String name, String login, String password,  Role role) {
-        User user = new User();
-        user.setId(id);
-        user.setName(name);
-        user.setLogin(login);
-        user.setPassword(password);
-        user.setRole(role);
+    public void createUser(User user) throws Exception {
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new Exception("User with this username already exists");
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.ROLE_USER);
         userRepository.save(user);
     }
 
@@ -60,15 +59,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateLogin(Long id, String login) {
 
-    }
-
-    public void addUser(User user) throws Exception {
-        if (userRepository.findByUsername(user.getName()).isPresent()) {
-            throw new Exception("User exists");
-        }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(Role.ROLE_USER);
-        userRepository.save(user);
     }
 
 }

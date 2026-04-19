@@ -4,7 +4,7 @@ import ru.max.SchoolDairy.dto.Role;
 import ru.max.SchoolDairy.model.User;
 
 public interface UserService {
-    void createUser(Long id, String name, String login, String password, Role role);
+    void createUser(User user) throws Exception;
 
     User findUserById(Long id);
 
