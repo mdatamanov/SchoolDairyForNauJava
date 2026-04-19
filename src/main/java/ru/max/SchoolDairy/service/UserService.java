@@ -1,9 +1,10 @@
 package ru.max.SchoolDairy.service;
 
+import ru.max.SchoolDairy.dto.Role;
 import ru.max.SchoolDairy.model.User;
 
 public interface UserService {
-    void createUser(Long id, String fullName, String login, String password);
+    void createUser(User user) throws Exception;
 
     User findUserById(Long id);
 

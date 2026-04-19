@@ -1,50 +1,31 @@
 package ru.max.SchoolDairy.model;
 
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import ru.max.SchoolDairy.dto.Role;
+
+@Entity
+@Table(name = "users")
+@Data
+@Getter
+@Setter
 public class User {
+    @Id
     private Long id;
-    private String fullName;
-    private String login;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+    private String username;
     private String password;
 
     public User() {
     }
 
-    public User(Long id, String fullName, String login, String password) {
+    public User(Long id, Role role, String username, String password) {
         this.id = id;
-        this.fullName = fullName;
-        this.login = login;
-        this.password = password;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
+        this.role = role;
+        this.username = username;
         this.password = password;
     }
 }

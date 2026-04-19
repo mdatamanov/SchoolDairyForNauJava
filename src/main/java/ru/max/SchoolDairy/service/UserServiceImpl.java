@@ -2,10 +2,12 @@ package ru.max.SchoolDairy.service;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.max.SchoolDairy.config.Config;
+import ru.max.SchoolDairy.dto.Role;
 import ru.max.SchoolDairy.model.User;
-import ru.max.SchoolDairy.repository.UserRepository;
+import ru.max.SchoolDairy.repository.user.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -13,6 +15,9 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     private Config appConfig;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @Autowired
@@ -32,29 +37,28 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void createUser(Long id, String fullName, String login, String password) {
-        User user = new User();
-        user.setId(id);
-        user.setFullName(fullName);
-        user.setLogin(login);
-        user.setPassword(password);
-        userRepository.create(user);
+    public void createUser(User user) throws Exception {
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new Exception("User with this username already exists");
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.ROLE_USER);
+        userRepository.save(user);
     }
 
     @Override
     public User findUserById(Long id) {
-        return userRepository.read(id);
+        return null;
     }
 
     @Override
     public void deleteUser(Long id) {
-        userRepository.delete(id);
+
     }
 
     @Override
     public void updateLogin(Long id, String login) {
-        User user = findUserById(id);
-        user.setLogin(login);
-        userRepository.update(user);
+
     }
+
 }
