@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.max.SchoolDairy.model.User;
 import ru.max.SchoolDairy.service.UserService;
-import ru.max.SchoolDairy.service.UserServiceImpl;
 
 @Controller
 public class RegistrationController {
