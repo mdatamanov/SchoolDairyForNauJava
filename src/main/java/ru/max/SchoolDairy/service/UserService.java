@@ -1,12 +1,13 @@
 package ru.max.SchoolDairy.service;
 
-import ru.max.SchoolDairy.dto.Role;
 import ru.max.SchoolDairy.model.User;
+
+import java.util.Optional;
 
 public interface UserService {
     void createUser(User user) throws Exception;
 
-    User findUserById(Long id);
+    Optional<User> findUserById(Long id);
 
     void deleteUser(Long id);
 
